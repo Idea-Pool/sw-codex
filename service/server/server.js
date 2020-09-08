@@ -6,7 +6,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 const cors = require('cors');
 
-const castRouter = require('./routes/cast.route');
+const swapiRouter = require('./routes/swapi.route');
 
 const PORT = process.env.PORT || 4000;
 
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV && process.env.NODE_ENV !== 'development') {
     });
 }
 
-app.use('/api', castRouter);
+app.use('/api', swapiRouter);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

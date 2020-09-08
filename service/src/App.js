@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import NavBar from './components/NavBar';
-import Cast from './pages/Cast';
+import People from './pages/People';
 import Home from './pages/Home';
 
 function App() {
@@ -21,8 +21,8 @@ function App() {
         <Row>
           <Col>
             <Switch>
-              <Route path="/cast">
-                <Cast />
+              <Route path="/people">
+                <People />
               </Route>
               <Route path="/">
                 <Home />
