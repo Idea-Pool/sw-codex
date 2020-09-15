@@ -12,10 +12,6 @@ const MOCK_ENABLED = process.env.MOCK_ENABLED === '1';
 describe("Favoriting", () => {
     const page = new People();
 
-    beforeAll(() => {
-        page.open();
-    });
-
     beforeAll(async () => {
         if (MOCK_ENABLED) {
             await start();
@@ -26,6 +22,10 @@ describe("Favoriting", () => {
         if (MOCK_ENABLED) {
             await stop();
         }
+    });
+    
+    beforeAll(() => {
+        page.open();
     });
 
     for (const { pageN, name } of testData) {
