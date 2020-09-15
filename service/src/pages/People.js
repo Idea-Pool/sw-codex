@@ -2,19 +2,47 @@ import React, { useState, useEffect } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
 import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
+import { Star, StarFill } from 'react-bootstrap-icons';
+import { fetchPeople, favoritePeople, unfavoritePeople } from '../api/people';
+import Alert from '../components/Alert';
 
 function People() {
     const [peopleList, setPeopleList] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
+    const [alert, setAlert] = useState(null);
 
     useEffect(() => {
         const fetchCast = async () => {
-            const people = await (await fetch(`/api/people?page=${currentPage}`)).json();
+            const people = await fetchPeople(currentPage);
             setPeopleList(people);
         };
 
         fetchCast();
     }, [currentPage]);
+
+    const showAlert = (type, message) => {
+        setAlert({ type, message });
+    };
+    const hideAlert = () => {
+        setAlert(null);
+    };
+
+    const favorite = async name => {
+        if (await favoritePeople(name)) {
+            setPeopleList(await fetchPeople(currentPage));
+            showAlert('success', `Favorited ${name}`);
+        } else {
+            showAlert('danger', `Could not favorite ${name}`);
+        }
+    };
+    const unfavorite = async name => {
+        if (await unfavoritePeople(name)) {
+            setPeopleList(await fetchPeople(currentPage));
+            showAlert('success', `Unfavorited ${name}`);
+        } else {
+            showAlert('danger', `Could not unfavorite ${name}`);
+        }
+    };
 
     let table = <div className="justify-content-md-center">
         <Spinner animation="border" role="status">
@@ -28,6 +56,7 @@ function People() {
         table = <Table striped bordered hover>
             <thead>
                 <tr>
+                    <th>F*</th>
                     <th>Name</th>
                     <th>Birth year</th>
                     <th>Height (cm)</th>
@@ -37,6 +66,7 @@ function People() {
             <tbody>
                 {people.map((person, i) => (
                     <tr key={i}>
+                        <td width="50">{person.favorite ? <StarFill onClick={() => unfavorite(person.name)} /> : <Star onClick={() => favorite(person.name)} />}</td>
                         <td>{person.name}</td>
                         <td align="right">{person.birth_year}</td>
                         <td align="right">{person.height}</td>
@@ -69,6 +99,7 @@ function People() {
             <h1>People</h1>
             {table}
             {pagination}
+            {alert ? <Alert type={alert.type} message={alert.message} onClose={hideAlert} /> : <div />}
         </div>
     );
 }
