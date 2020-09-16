@@ -48,7 +48,6 @@ describe("Favoriting", () => {
                     page.toggleFavorite(name);
                     page.waitForAlert();
 
-                    expect(page.isFavorited(name)).withContext('Did not become favorited').toBeTrue();
                     expect(page.getAlertType()).withContext('Alert type is not correct').toBe('success');
                     expect(page.getAlertText()).withContext('Alert text is not correct').toContain(`Favorited ${name}`);
                 }
