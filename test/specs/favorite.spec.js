@@ -1,4 +1,5 @@
 const { People } = require('../pages/People.page');
+const { start, stop } = require('../mock');
 
 const testData = [
     { pageN: 1, name: 'R2-D2' },
@@ -6,9 +7,23 @@ const testData = [
     { pageN: 4, name: 'Jar Jar Binks' }
 ]
 
+const MOCK_ENABLED = process.env.MOCK_ENABLED === '1';
+
 describe("Favoriting", () => {
     const page = new People();
 
+    beforeAll(async () => {
+        if (MOCK_ENABLED) {
+            await start();
+        }
+    });
+
+    afterAll(async () => {
+        if (MOCK_ENABLED) {
+            await stop();
+        }
+    });
+    
     beforeAll(() => {
         page.open();
     });
