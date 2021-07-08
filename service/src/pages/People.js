@@ -65,7 +65,7 @@ function People() {
             </thead>
             <tbody>
                 {people.map((person, i) => (
-                    <tr key={i}>
+                    <tr key={i} data-test-favorited={person.favorite} data-test-name={person.name}>
                         <td width="50">{person.favorite ? <StarFill onClick={() => unfavorite(person.name)} /> : <Star onClick={() => favorite(person.name)} />}</td>
                         <td>{person.name}</td>
                         <td align="right">{person.birth_year}</td>
